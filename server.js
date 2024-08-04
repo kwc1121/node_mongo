@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 
 app.use(express.static(__dirname + '/public'))
+app.set('view engine', 'ejs')
+
 
 app.listen(8080, () => {
     console.log('http://localhost:8080 에서 서버 실행중')
@@ -26,8 +28,12 @@ app.get('/about', (요청, 응답) => {
 
 app.get('/list', async (요청, 응답) => {
     let result = await db.collection('post').find().toArray()
-    console.log(result[0].title)
-    응답.send(result[0].title)
+    응답.render('list.ejs', { 글목록 : result})
+})
+
+app.get('/time', (요청,응답) => {
+    var time = new Date()
+    응답.send(time)
 })
 
 
